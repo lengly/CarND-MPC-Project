@@ -91,6 +91,7 @@ int main() {
           double py = j[1]["y"];
           double psi = j[1]["psi"];
           double v = j[1]["speed"];
+          double rho = j[1]["steering_angle"];
       // double steer_value_input = j[1]["steering_angle"];
       // double throttle_value_input = j[1]["throttle"];
           /*
@@ -112,9 +113,13 @@ int main() {
           double cte = polyeval(coeffs, 0);
           double epsi = -atan(coeffs[1]);
 
+          const double latency = 0.1;
+          const double Lf = 2.67;
+          px = v * latency;
+          psi = -v * rho / Lf * latency;
+
           Eigen::VectorXd state(6);
-          // state << ptsX(0), ptsY(0), psi, v, cte, epsi;
-          state << 0, 0, 0, v, cte, epsi;
+          state << px, 0, psi, v, cte, epsi;
 
           double steer_value;
           double throttle_value;
